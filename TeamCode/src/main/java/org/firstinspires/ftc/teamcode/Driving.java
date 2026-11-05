@@ -147,7 +147,7 @@ public class Driving extends LinearOpMode {
 
             //Loading Servo
             if(powerOut){
-                outServo.setPower(-1);
+                outServo.setPower(-0.5);
             }
             else{
                 outServo.setPower(0);
