@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 @TeleOp(name="Driving", group="Linear OpMode")
 //@Disabled
 public class Driving extends LinearOpMode {
@@ -165,7 +167,9 @@ public class Driving extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower);
-            telemetry.addData("Outtake", (TPS / 28));
+            telemetry.addData("Outtake RPM", (outtake.getVelocity() / 28) * 60);
+            telemetry.addData("Outtake Current (mA)", outtake.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Outtake Voltage", outtake.getPower());
             telemetry.update();
         }
     }
