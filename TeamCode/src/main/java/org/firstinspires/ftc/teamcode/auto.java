@@ -27,6 +27,7 @@ public class auto extends LinearOpMode {
     private ElapsedTime time_guy = new ElapsedTime();
     private double pastX;
     private double pastY;
+    private double pastH;
     GoBildaPinpointDriver con;
     public void runOpMode(){
         front_left=hardwareMap.get(DcMotor.class,"front_left_drive");
@@ -62,7 +63,16 @@ public class auto extends LinearOpMode {
         con.setPosition(new Pose2D(DistanceUnit.INCH,0,0, AngleUnit.DEGREES,0));
         pastX = 0;
         pastY=0;
+        pastH=0;
         Pose2D pose = con.getPosition();
+        // if shoot no work
+        forward(10,false);
+        //if shoot work
+        forward(20,false);
+        strafe(60,true);
+        forward(30,false);
+        turn(180,false);
+
 
 
 
@@ -132,6 +142,36 @@ public class auto extends LinearOpMode {
                 front_left.setPower(-1);
                 back_left.setPower(1);
 
+
+            }
+        }
+    }
+    public void turn(double degree,boolean right) {
+
+
+        Pose2D pose = con.getPosition();
+
+        double tar;
+
+        if (right) {
+            tar = pastH - degree;
+            while (tar > pose.getHeading(AngleUnit.DEGREES)) {
+                con.update();
+                front_right.setPower(1);
+                back_right.setPower(1);
+                front_left.setPower(-1);
+                back_left.setPower(-1);
+
+            }
+
+        } else {
+            tar = pastH + degree;
+            while (tar < pose.getHeading(AngleUnit.DEGREES)) {
+                con.update();
+                front_right.setPower(-1);
+                back_right.setPower(-1);
+                front_left.setPower(1);
+                back_left.setPower(1);
 
             }
         }
