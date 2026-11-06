@@ -34,6 +34,8 @@ public class Driving extends LinearOpMode {
 
     boolean outtakePower = false;
 
+    double intakePower = 0;
+
     @Override
     public void runOpMode() {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
@@ -74,14 +76,20 @@ public class Driving extends LinearOpMode {
             double frontRightPower = axial + lateral - yaw;
             double backLeftPower   = axial + lateral + yaw;
             double backRightPower  = axial - lateral - yaw;
-            double intakePower = gamepad2.left_trigger;
+
             // boolean outtakeBoost = gamepad2.rightTriggerWasPressed();
             // boolean outtakeSlow = gamepad2.rightBumperWasPressed();
             boolean outtakeOn = gamepad2.rightTriggerWasPressed();
             boolean powerOut = gamepad2.b;
 
-            if (intakePower>0){
-                intakePower=.25;
+            if (gamepad2.left_trigger_pressed){
+                intakePower = .25;
+            }
+            else if (gamepad2.left_bumper){
+                intakePower= -.25;
+            }
+            else{
+                intakePower = 0;
             }
             /* Code for speeding up
             if (outtakeBoost){
