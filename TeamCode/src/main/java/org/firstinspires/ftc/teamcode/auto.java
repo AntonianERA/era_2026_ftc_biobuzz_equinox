@@ -4,7 +4,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -16,15 +20,34 @@ public class auto extends LinearOpMode {
     private DcMotor back_right;
     private DcMotor back_left;
     private DcMotor front_right;
+    private DcMotor intake;
+    private DcMotorEx outtake;
+    private Servo blockServo;
+    private CRServo outServo;
+    private ElapsedTime time_guy = new ElapsedTime();
     private double pastX;
     private double pastY;
     GoBildaPinpointDriver con;
     public void runOpMode(){
-        front_left=hardwareMap.get(DcMotor.class,"front_left");
-        back_left=hardwareMap.get(DcMotor.class,"back_left");
-        front_right=hardwareMap.get(DcMotor.class,"front_right");
-        back_right=hardwareMap.get(DcMotor.class,"back_right");
+        front_left=hardwareMap.get(DcMotor.class,"front_left_drive");
+        back_left=hardwareMap.get(DcMotor.class,"back_left_drive");
+        front_right=hardwareMap.get(DcMotor.class,"front_right_drive");
+        back_right=hardwareMap.get(DcMotor.class,"back_right_drive");
         con=hardwareMap.get(GoBildaPinpointDriver.class,"pins");
+
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
+
+        blockServo = hardwareMap.get(Servo.class, "block_servo");
+        outServo = hardwareMap.get(CRServo.class, "load_Servo");
+
+        front_left.setDirection(DcMotor.Direction.REVERSE);
+        back_left.setDirection(DcMotor.Direction.REVERSE);
+        front_right.setDirection(DcMotor.Direction.FORWARD);
+        back_right.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.REVERSE);
+        outtake.setDirection(DcMotorEx.Direction.FORWARD);
+
         //reset the4 thingy thingh
         front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -33,7 +56,7 @@ public class auto extends LinearOpMode {
         //remeber to ask for the offset in millimeters
         con.setOffsets(6,7,DistanceUnit.INCH);
         con.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        //check the diretion of both encoders
+        //check the diretion of both encoders Still need to test
         con.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         con.resetPosAndIMU();
         con.setPosition(new Pose2D(DistanceUnit.INCH,0,0, AngleUnit.DEGREES,0));
@@ -74,6 +97,11 @@ public class auto extends LinearOpMode {
 
             }
         }
+        front_right.setPower(0);
+        back_right.setPower(0);
+        front_left.setPower(0);
+        back_left.setPower(0);
+
 
     }
     //dist is the distance you want if right true makes bot go right.
@@ -107,5 +135,19 @@ public class auto extends LinearOpMode {
 
             }
         }
+        front_right.setPower(0);
+        back_right.setPower(0);
+        front_left.setPower(0);
+        back_left.setPower(0);
+
+    }
+    public void shoot(double velocity,double time){
+        while (time_guy.time()<=time);{
+            outtake.setVelocity(velocity);
+            outServo.setPower(1);
+        }
+        outtake.setVelocity(0);
+        outServo.setPower(0);
+
     }
 }
