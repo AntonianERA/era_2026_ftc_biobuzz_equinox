@@ -63,7 +63,7 @@ public class test extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         out = hardwareMap.get(DcMotorEx.class,"outtake");
-        pinns = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
+        pinns = hardwareMap.get(GoBildaPinpointDriver.class,"pins");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
