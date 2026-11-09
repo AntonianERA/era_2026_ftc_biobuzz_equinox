@@ -77,11 +77,12 @@ public class Driving extends LinearOpMode {
             boolean outtakeOn = gamepad2.xWasPressed();
             boolean powerOut = gamepad2.b;
 
+            //Max: 312 RPM
             if (gamepad2.left_trigger_pressed){
-                intakePower = .25;
+                intakePower = 1;
             }
             else if (gamepad2.left_bumper){
-                intakePower= -.25;
+                intakePower= -1;
             }
             else{
                 intakePower = 0;
