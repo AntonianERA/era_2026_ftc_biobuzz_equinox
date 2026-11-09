@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 public class Driving extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
+    //Servos are 300 degrees. Use IntendedDegree/300
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
     private DcMotor backLeftDrive = null;
@@ -24,16 +25,9 @@ public class Driving extends LinearOpMode {
 
     private DcMotor intake = null;
     private DcMotorEx outtake = null;
-    Servo blockServo;
     CRServo outServo;
-
-    boolean blockServoOn = false;
-
     double TPS = 0;
     final double RPM_ADJUST = 100;
-
-    boolean blockButton = false;
-
     boolean outtakePower = false;
 
     double intakePower = 0;
@@ -47,7 +41,6 @@ public class Driving extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotorEx.class, "outtake");
 
-        blockServo = hardwareMap.get(Servo.class, "block_servo");
         outServo = hardwareMap.get(CRServo.class, "load_Servo");
 
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -140,20 +133,6 @@ public class Driving extends LinearOpMode {
             intake.setPower(intakePower);
 
             outtake.setVelocity(TPS);
-
-            //Activate Discard Servo
-            blockButton = gamepad2.xWasPressed();
-            if(blockButton){
-                blockServoOn = !blockServoOn;
-            }
-
-            if (blockServoOn){
-                //125 Degrees
-                blockServo.setPosition(135.0/300);
-            }
-            else {
-                blockServo.setPosition(0);
-            }
 
             //Loading Servo
             if(powerOut){
