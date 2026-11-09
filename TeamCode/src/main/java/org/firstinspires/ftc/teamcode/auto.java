@@ -66,14 +66,8 @@ public class auto extends LinearOpMode {
         pastH=0;
         Pose2D pose = con.getPosition();
         // if shoot no work
-        forward(10,false);
-        //if shoot work
-        forward(20,false);
-        strafe(60,true);
-        forward(30,false);
-        turn(180,false);
-
-
+        forward(100,false);
+        strafe(10,false);
 
 
 
