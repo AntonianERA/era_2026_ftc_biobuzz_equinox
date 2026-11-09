@@ -27,7 +27,7 @@ public class Driving extends LinearOpMode {
     private DcMotorEx outtake = null;
     CRServo outServo;
     double TPS = 0;
-    final double RPM_ADJUST = 100;
+    double RPM_ADJUST = 3000;
     boolean outtakePower = false;
 
     double intakePower = 0;
@@ -72,9 +72,9 @@ public class Driving extends LinearOpMode {
             double backLeftPower   = axial + lateral + yaw;
             double backRightPower  = axial - lateral - yaw;
 
-            // boolean outtakeBoost = gamepad2.rightTriggerWasPressed();
-            // boolean outtakeSlow = gamepad2.rightBumperWasPressed();
-            boolean outtakeOn = gamepad2.rightTriggerWasPressed();
+            boolean outtakeBoost = gamepad2.rightTriggerWasPressed();
+            boolean outtakeSlow = gamepad2.rightBumperWasPressed();
+            boolean outtakeOn = gamepad2.xWasPressed();
             boolean powerOut = gamepad2.b;
 
             if (gamepad2.left_trigger_pressed){
@@ -86,28 +86,28 @@ public class Driving extends LinearOpMode {
             else{
                 intakePower = 0;
             }
-            /* Code for speeding up
+
             if (outtakeBoost){
-                TPS += 28 * RPM_ADJUST / 60;
+                RPM_ADJUST += 1000;
             }
             else if (outtakeSlow){
-                TPS -= 28 * RPM_ADJUST / 60;
+                RPM_ADJUST -= 1000;
             }
-            //Limited to 6000 RPM
-            if (TPS > 28 * 6000 / 60) {
-                TPS = 28 * 6000 / 60;
+            //Limited to 5000 RPM
+            if (RPM_ADJUST > 5000) {
+                TPS = 5000;
             }
-            //Minimum of 0 RPM
-            if (TPS < 0) {
-                TPS = 0;
+            //Minimum of 1000 RPM
+            if (RPM_ADJUST < 0) {
+                RPM_ADJUST = 1000;
             }
-            */
 
             if (outtakeOn){
                 outtakePower = !outtakePower;
             }
             if (outtakePower) {
-                TPS = 28 * 2400 / 60;
+                //Max: 6000 RPM; Pulses per rotation: 28; Pulses * RPM / 60
+                TPS = 28 * RPM_ADJUST / 60;
             }
             else {
                 TPS = 0;
