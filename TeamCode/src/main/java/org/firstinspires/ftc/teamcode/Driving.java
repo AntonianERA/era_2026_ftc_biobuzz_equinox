@@ -18,10 +18,10 @@ public class Driving extends LinearOpMode {
     // Declare OpMode members for each of the 4 motors.
     //Servos are 300 degrees. Use IntendedDegree/300
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor frontLeftDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backRightDrive = null;
+    private DcMotorEx frontLeftDrive = null;
+    private DcMotorEx backLeftDrive = null;
+    private DcMotorEx frontRightDrive = null;
+    private DcMotorEx backRightDrive = null;
 
     private DcMotor intake = null;
     private DcMotorEx outtake = null;
@@ -34,19 +34,19 @@ public class Driving extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive = hardwareMap.get(DcMotorEx.class, "front_left_drive");
+        backLeftDrive = hardwareMap.get(DcMotorEx.class, "back_left_drive");
+        frontRightDrive = hardwareMap.get(DcMotorEx.class, "front_right_drive");
+        backRightDrive = hardwareMap.get(DcMotorEx.class, "back_right_drive");
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotorEx.class, "outtake");
 
         outServo = hardwareMap.get(CRServo.class, "load_Servo");
 
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotorEx.Direction.FORWARD);
         intake.setDirection(DcMotor.Direction.REVERSE);
         outtake.setDirection(DcMotorEx.Direction.FORWARD);
 
@@ -150,6 +150,14 @@ public class Driving extends LinearOpMode {
             telemetry.addData("Outtake RPM", (outtake.getVelocity() / 28) * 60);
             telemetry.addData("Outtake Current (mA)", outtake.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Outtake Voltage", outtake.getPower());
+
+            telemetry.addData("Front Left Velocity", frontLeftDrive.getVelocity());
+            telemetry.addData("Front Right Velocity", frontRightDrive.getVelocity());
+            telemetry.addData("Back Left Velocity", backLeftDrive.getVelocity());
+            telemetry.addData("Back Right Velocity", backRightDrive.getVelocity());
+
+            // Version Number; Competition #, Iteration #
+            telemetry.addData("Version", 1.0);
             telemetry.update();
         }
     }
