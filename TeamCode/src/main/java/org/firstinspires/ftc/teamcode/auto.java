@@ -50,10 +50,10 @@ public class auto extends LinearOpMode {
         outtake.setDirection(DcMotorEx.Direction.FORWARD);
 
         //reset the4 thingy thingh
-        front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        front_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        back_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        back_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //remeber to ask for the offset in millimeters
         con.setOffsets(6,7,DistanceUnit.INCH);
         con.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -66,37 +66,86 @@ public class auto extends LinearOpMode {
         pastH=0;
         Pose2D pose = con.getPosition();
         // if shoot no work
-        forward(100,false);
-        strafe(10,false);
-
+        //y is forward
+        waitForStart();
+        con.resetPosAndIMU();
+        //forward(90,false);
+        strafe(2,false);
+        strafe(1,true);
+        shoot(28 * 2800 / 60,20);
+       // strafe(10,false);
 
 
     }
     // positive distance  if back true it goes backwards
     public void forward(double dist ,boolean back){
         Pose2D pose = con.getPosition();
+        telemetry.addLine("hellow");
 
         double tar;
 
         if (back){
             tar=pastX-dist;
-            while (tar>pose.getX(DistanceUnit.INCH)){
+            while (tar<con.getPosY(DistanceUnit.INCH)){
                 con.update();
-                front_right.setPower(-1);
-                back_right.setPower(-1);
-                front_left.setPower(-1);
-                back_left.setPower(-1);
+                front_right.setPower(-.7);
+                back_right.setPower(-.7);
+                front_left.setPower(-.7);
+                back_left.setPower(-.7);
+                if(con.getHeading(AngleUnit.DEGREES)>10);{
+                    while (con.getHeading(AngleUnit.DEGREES)>10) {
+
+                        front_right.setPower(-.7);
+                        back_right.setPower(-.7);
+                        front_left.setPower(.7);
+                        back_left.setPower(.7);
+                    }
+                    if(con.getHeading(AngleUnit.DEGREES)<10) {
+                        while (con.getHeading(AngleUnit.DEGREES) < -10) {
+
+                            front_right.setPower(.7);
+                            back_right.setPower(.7);
+                            front_left.setPower(-.7);
+                            back_left.setPower(-.7);
+                        }
+                    }
+
+                }
 
             }
 
         }else{
+
             tar=pastX+dist;
-            while (tar<pose.getX(DistanceUnit.INCH)){
+            telemetry.addData("tar",tar);
+            while (tar>con.getPosY(DistanceUnit.INCH)){
+                telemetry.addData("pos",con.getPosY(DistanceUnit.INCH));
                 con.update();
-                front_right.setPower(1);
-                back_right.setPower(1);
-                front_left.setPower(1);
-                back_left.setPower(1);
+                front_right.setPower(.7);
+                back_right.setPower(.7);
+                front_left.setPower(.7);
+                back_left.setPower(.7);
+                if(con.getHeading(AngleUnit.DEGREES)>10);{
+                    while (con.getHeading(AngleUnit.DEGREES)>10) {
+
+                        front_right.setPower(.7);
+                        back_right.setPower(.7);
+                        front_left.setPower(-.7);
+                        back_left.setPower(-.7);
+                }
+                if(con.getHeading(AngleUnit.DEGREES)<10) {
+                    while (con.getHeading(AngleUnit.DEGREES) < -10) {
+
+                        front_right.setPower(-.7);
+                        back_right.setPower(-.7);
+                        front_left.setPower(.7);
+                        back_left.setPower(.7);
+                    }
+                }
+                }
+                telemetry.update();
+
+
 
 
             }
@@ -118,7 +167,7 @@ public class auto extends LinearOpMode {
 
         if (right) {
             tar = pastY - dist;
-            while (tar > pose.getY(DistanceUnit.INCH)) {
+            while (tar < con.getPosX(DistanceUnit.INCH)) {
                 con.update();
                 front_right.setPower(-1);
                 back_right.setPower(1);
@@ -129,7 +178,7 @@ public class auto extends LinearOpMode {
 
         } else {
             tar = pastY + dist;
-            while (tar < pose.getY(DistanceUnit.INCH)) {
+            while (tar > con.getPosX(DistanceUnit.INCH)) {
                 con.update();
                 front_right.setPower(1);
                 back_right.setPower(-1);
@@ -139,6 +188,12 @@ public class auto extends LinearOpMode {
 
             }
         }
+
+        front_right.setPower(0);
+        back_right.setPower(0);
+        front_left.setPower(0);
+        back_left.setPower(0);
+
     }
     public void turn(double degree,boolean right) {
 
@@ -149,7 +204,7 @@ public class auto extends LinearOpMode {
 
         if (right) {
             tar = pastH - degree;
-            while (tar > pose.getHeading(AngleUnit.DEGREES)) {
+            while (tar < con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(1);
                 back_right.setPower(1);
@@ -160,7 +215,7 @@ public class auto extends LinearOpMode {
 
         } else {
             tar = pastH + degree;
-            while (tar < pose.getHeading(AngleUnit.DEGREES)) {
+            while (tar >con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(-1);
                 back_right.setPower(-1);
@@ -176,6 +231,7 @@ public class auto extends LinearOpMode {
 
     }
     public void shoot(double velocity,double time){
+        time_guy.reset();
         while (time_guy.time()<=time);{
             outtake.setVelocity(velocity);
             outServo.setPower(1);

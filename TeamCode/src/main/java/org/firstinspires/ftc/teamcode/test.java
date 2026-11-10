@@ -38,10 +38,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
-@Disabled
+@TeleOp(name="test")
 public class test extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -91,9 +91,10 @@ public class test extends LinearOpMode {
         while (opModeIsActive()) {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("x", "%4.2f,",pinns.getEncoderX());
-            telemetry.addData("y", "%4.2f",pinns.getEncoderY());
-            telemetry.addData("heading","%4.2f",pinns.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("x",pinns.getPosX(DistanceUnit.INCH));
+            telemetry.addData("Y",pinns.getPosY(DistanceUnit.INCH));
+            telemetry.addData("heading",pinns.getHeading(AngleUnit.DEGREES));
             telemetry.update();
+
         }
     }}
