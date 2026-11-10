@@ -54,6 +54,11 @@ public class auto extends LinearOpMode {
         front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         back_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         back_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //remeber to ask for the offset in millimeters
         con.setOffsets(6,7,DistanceUnit.INCH);
         con.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -67,19 +72,19 @@ public class auto extends LinearOpMode {
         Pose2D pose = con.getPosition();
         // if shoot no work
         //y is forward
+        //version stuff
+        telemetry.addData("version: ",1.0);
         waitForStart();
         con.resetPosAndIMU();
-        //forward(90,false);
+        forward(90,false);
         strafe(2,false);
-        strafe(1,true);
-        shoot(28 * 2800 / 60,20);
-       // strafe(10,false);
 
 
     }
     // positive distance  if back true it goes backwards
     public void forward(double dist ,boolean back){
         Pose2D pose = con.getPosition();
+        con.resetPosAndIMU();
         telemetry.addLine("hellow");
 
         double tar;
@@ -160,6 +165,7 @@ public class auto extends LinearOpMode {
     //dist is the distance you want if right true makes bot go right.
     //base goes left
     public void strafe(double dist,boolean right) {
+        con.resetPosAndIMU();
 
         Pose2D pose = con.getPosition();
 
@@ -196,6 +202,7 @@ public class auto extends LinearOpMode {
 
     }
     public void turn(double degree,boolean right) {
+        con.resetPosAndIMU();
 
 
         Pose2D pose = con.getPosition();
@@ -206,10 +213,10 @@ public class auto extends LinearOpMode {
             tar = pastH - degree;
             while (tar < con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
-                front_right.setPower(1);
-                back_right.setPower(1);
-                front_left.setPower(-1);
-                back_left.setPower(-1);
+                front_right.setPower(-1);
+                back_right.setPower(-1);
+                front_left.setPower(1);
+                back_left.setPower(1);
 
             }
 
@@ -217,10 +224,10 @@ public class auto extends LinearOpMode {
             tar = pastH + degree;
             while (tar >con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
-                front_right.setPower(-1);
-                back_right.setPower(-1);
-                front_left.setPower(1);
-                back_left.setPower(1);
+                front_right.setPower(1);
+                back_right.setPower(1);
+                front_left.setPower(-1);
+                back_left.setPower(-1);
 
             }
         }
