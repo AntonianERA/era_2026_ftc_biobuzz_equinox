@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 public class Driving extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
+    //Servos are 300 degrees. Use IntendedDegree/300
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
     private DcMotor backLeftDrive = null;
@@ -24,16 +25,9 @@ public class Driving extends LinearOpMode {
 
     private DcMotor intake = null;
     private DcMotorEx outtake = null;
-    Servo blockServo;
     CRServo outServo;
-
-    boolean blockServoOn = false;
-
     double TPS = 0;
-    final double RPM_ADJUST = 100;
-
-    boolean blockButton = false;
-
+    double RPM_ADJUST = 3000;
     boolean outtakePower = false;
 
     double intakePower = 0;
@@ -47,7 +41,6 @@ public class Driving extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotorEx.class, "outtake");
 
-        blockServo = hardwareMap.get(Servo.class, "block_servo");
         outServo = hardwareMap.get(CRServo.class, "load_Servo");
 
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -79,42 +72,43 @@ public class Driving extends LinearOpMode {
             double backLeftPower   = axial + lateral + yaw;
             double backRightPower  = axial - lateral - yaw;
 
-            // boolean outtakeBoost = gamepad2.rightTriggerWasPressed();
-            // boolean outtakeSlow = gamepad2.rightBumperWasPressed();
-            boolean outtakeOn = gamepad2.rightTriggerWasPressed();
+            boolean outtakeBoost = gamepad2.rightTriggerWasPressed();
+            boolean outtakeSlow = gamepad2.rightBumperWasPressed();
+            boolean outtakeOn = gamepad2.xWasPressed();
             boolean powerOut = gamepad2.b;
 
+            //Max: 312 RPM
             if (gamepad2.left_trigger_pressed){
-                intakePower = .25;
+                intakePower = 1;
             }
             else if (gamepad2.left_bumper){
-                intakePower= -.25;
+                intakePower= -1;
             }
             else{
                 intakePower = 0;
             }
-            /* Code for speeding up
+
             if (outtakeBoost){
-                TPS += 28 * RPM_ADJUST / 60;
+                RPM_ADJUST += 1000;
             }
             else if (outtakeSlow){
-                TPS -= 28 * RPM_ADJUST / 60;
+                RPM_ADJUST -= 1000;
             }
-            //Limited to 6000 RPM
-            if (TPS > 28 * 6000 / 60) {
-                TPS = 28 * 6000 / 60;
+            //Limited to 5000 RPM
+            if (RPM_ADJUST > 5000) {
+                TPS = 5000;
             }
-            //Minimum of 0 RPM
-            if (TPS < 0) {
-                TPS = 0;
+            //Minimum of 1000 RPM
+            if (RPM_ADJUST < 0) {
+                RPM_ADJUST = 1000;
             }
-            */
 
             if (outtakeOn){
                 outtakePower = !outtakePower;
             }
             if (outtakePower) {
-                TPS = 28 * 2400 / 60;
+                //Max: 6000 RPM; Pulses per rotation: 28; Pulses * RPM / 60
+                TPS = 28 * RPM_ADJUST / 60;
             }
             else {
                 TPS = 0;
@@ -140,20 +134,6 @@ public class Driving extends LinearOpMode {
             intake.setPower(intakePower);
 
             outtake.setVelocity(TPS);
-
-            //Activate Discard Servo
-            blockButton = gamepad2.xWasPressed();
-            if(blockButton){
-                blockServoOn = !blockServoOn;
-            }
-
-            if (blockServoOn){
-                //125 Degrees
-                blockServo.setPosition(135.0/300);
-            }
-            else {
-                blockServo.setPosition(0);
-            }
 
             //Loading Servo
             if(powerOut){
