@@ -76,8 +76,21 @@ public class auto extends LinearOpMode {
         telemetry.addData("version: ",1.0);
         waitForStart();
         con.resetPosAndIMU();
-        forward(90,false);
-        strafe(2,false);
+        forward(23-7,false);
+        //strafe(9,true);
+        //to replace strafe
+        turn(90,false);
+        forward(9,true);
+        //turn(90,false);
+        shoot(28 *5000 /60,20);
+        //turn(90,true);
+        //strafe(3,true);
+        forward(3,true);
+        turn(90,true);
+        forward(87,false);
+        //strafe(45,false);
+        turn(90,false);
+        forward(45,false);
 
 
     }
