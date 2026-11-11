@@ -77,19 +77,13 @@ public class auto extends LinearOpMode {
         waitForStart();
         con.resetPosAndIMU();
         forward(23-7,false);
-        //strafe(9,true);
-        //to replace strafe
+        strafe(9,true);
         turn(90,false);
-        forward(9,true);
-        //turn(90,false);
         shoot(28 *5000 /60,20);
-        //turn(90,true);
-        //strafe(3,true);
         forward(3,true);
+        //turn(90,true);
         turn(90,true);
-        forward(87,false);
-        //strafe(45,false);
-        turn(90,false);
+        strafe(87,true);
         forward(45,false);
 
 
