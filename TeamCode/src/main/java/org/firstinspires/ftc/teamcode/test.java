@@ -83,17 +83,36 @@ public class test extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        double lowspeed = 99999999;
+        boolean test=false;
+        double curr;
+
 
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            if(gamepad1.a){
+                out.setVelocity(28 * 4000 / 60);
+            }
+            if (gamepad1.x){
+                test =true;
+            }
+            if(test){
+                curr=out.getVelocity();
+                if (curr<lowspeed)
+                    curr=lowspeed;
+                telemetry.addData("curr speed",curr);
+
+            }
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("x",pinns.getPosX(DistanceUnit.INCH));
             telemetry.addData("Y",pinns.getPosY(DistanceUnit.INCH));
             telemetry.addData("heading",pinns.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("LOWEST SPEED",lowspeed);
             telemetry.update();
 
         }
