@@ -3,7 +3,7 @@
 
 ## Setup Wireless Connectivity
 1. Add %LOCALAPPDATA%\Android\Sdk\platform-tools to the $PATH variable in the environment settings.
-2. Connect Control to Computer via USB and WIFI
+2. Connect Control HUB to Computer via USB and WIFI
 3. Start Android Studio and open your bots code base. Wait for Grabble to finish.
 4. Start the terminal in Android Studio (Bottom left)
 5. Type command "adb tcpip 5555"
@@ -16,6 +16,10 @@
 
 The Rev Robotics Control Hub v1.0 will appear at the top.
 
+## Troubleshooting
+If there is a red dot in Android Studio on the REV robotics device try disconnecting ADB and connect again.
+
+> adb disconnect
 
 
 ## Diagnostics Page:

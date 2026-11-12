@@ -96,11 +96,11 @@ public class Driving extends LinearOpMode {
             }
             //Limited to 3500 RPM
             if (RPM_ADJUST > 3500) {
-                TPS = 5000;
+                RPM_ADJUST = 3500;
             }
-            //Minimum of 2000 RPM
-            if (RPM_ADJUST < 2000) {
-                RPM_ADJUST = 2000;
+            //Minimum of 2500 RPM
+            if (RPM_ADJUST < 2500) {
+                RPM_ADJUST = 2500;
             }
 
             if (outtakeOn){
@@ -137,7 +137,7 @@ public class Driving extends LinearOpMode {
 
             //Loading Servo
             if(powerOut){
-                outServo.setPower(-0.5);
+                outServo.setPower(-0.3);
             }
             else{
                 outServo.setPower(0);
