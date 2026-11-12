@@ -89,18 +89,18 @@ public class Driving extends LinearOpMode {
             }
 
             if (outtakeBoost){
-                RPM_ADJUST += 1000;
+                RPM_ADJUST += 100;
             }
             else if (outtakeSlow){
-                RPM_ADJUST -= 1000;
+                RPM_ADJUST -= 100;
             }
-            //Limited to 5000 RPM
-            if (RPM_ADJUST > 5000) {
+            //Limited to 3500 RPM
+            if (RPM_ADJUST > 3500) {
                 TPS = 5000;
             }
-            //Minimum of 1000 RPM
-            if (RPM_ADJUST < 0) {
-                RPM_ADJUST = 1000;
+            //Minimum of 2000 RPM
+            if (RPM_ADJUST < 2000) {
+                RPM_ADJUST = 2000;
             }
 
             if (outtakeOn){
