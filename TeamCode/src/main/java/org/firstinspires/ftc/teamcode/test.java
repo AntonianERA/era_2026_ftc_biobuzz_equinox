@@ -85,7 +85,7 @@ public class test extends LinearOpMode {
         telemetry.update();
         double lowspeed = 99999999;
         boolean test=false;
-        double curr;
+        double curr=0;
 
 
         waitForStart();
@@ -103,8 +103,10 @@ public class test extends LinearOpMode {
                 curr=out.getVelocity();
                 if (curr<lowspeed)
                     curr=lowspeed;
-                telemetry.addData("curr speed",curr);
 
+            }
+            if(gamepad1.y){
+                test = false;
             }
 
             // Show the elapsed game time and wheel power.
@@ -113,6 +115,7 @@ public class test extends LinearOpMode {
             telemetry.addData("Y",pinns.getPosY(DistanceUnit.INCH));
             telemetry.addData("heading",pinns.getHeading(AngleUnit.DEGREES));
             telemetry.addData("LOWEST SPEED",lowspeed);
+            telemetry.addData("curr speed",curr);
             telemetry.update();
 
         }

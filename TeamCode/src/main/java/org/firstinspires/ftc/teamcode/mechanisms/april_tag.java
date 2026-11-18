@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import android.util.Size;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -15,7 +20,37 @@ public class april_tag {
     private VisionPortal visionPortal;
     private List<AprilTagDetection> dectectedTags = new ArrayList<>();
     private Telemetry telemetry;
-    public void init(HardwareMap hwMap){
+    public void init(HardwareMap hwMap,Telemetry telemetry){
         this.telemetry = telemetry;
+        aprilTagProcessor = new AprilTagProcessor.Builder()
+                .setDrawTagID(true)
+                .setDrawTagOutline(true)
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true)
+                .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
+                .build();
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+        builder.setCamera(hwMap.get(WebcamName.class,"cam"));
+        builder.setCameraResolution(new Size(640,400));
+        builder.addProcessor(aprilTagProcessor);
+        visionPortal = builder.build();
+
+
+    }
+    public void update(){
+        dectectedTags=aprilTagProcessor.getDetections();
+    }
+
+    public List<AprilTagDetection> getDectectedTags() {
+        return dectectedTags;
+    }
+    public AprilTagDetection getTagByID(int id){
+        for(AprilTagDetection detection : dectectedTags){
+            if (detection.id ==  id){
+                return detection;
+
+            }
+        }
+        return null;
     }
 }
