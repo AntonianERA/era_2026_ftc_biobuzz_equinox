@@ -82,7 +82,7 @@ public class auto extends LinearOpMode {
         turn(90,false);
         forward(9,true);
         //turn(90,false);
-        shoot(28 *5000 /60,20);
+        shoot(28 *3000 /60,20);
         //turn(90,true);
         //strafe(3,true);
         forward(3,true);
@@ -139,25 +139,25 @@ public class auto extends LinearOpMode {
             while (tar>con.getPosY(DistanceUnit.INCH)){
                 telemetry.addData("pos",con.getPosY(DistanceUnit.INCH));
                 con.update();
-                front_right.setPower(.7);
-                back_right.setPower(.7);
-                front_left.setPower(.7);
-                back_left.setPower(.7);
+                front_right.setPower(.35);
+                back_right.setPower(.35);
+                front_left.setPower(.35);
+                back_left.setPower(.35);
                 if(con.getHeading(AngleUnit.DEGREES)>10);{
                     while (con.getHeading(AngleUnit.DEGREES)>10) {
 
-                        front_right.setPower(.7);
-                        back_right.setPower(.7);
-                        front_left.setPower(-.7);
-                        back_left.setPower(-.7);
+                        front_right.setPower(.35);
+                        back_right.setPower(.35);
+                        front_left.setPower(-.35);
+                        back_left.setPower(-.35);
                 }
                 if(con.getHeading(AngleUnit.DEGREES)<10) {
                     while (con.getHeading(AngleUnit.DEGREES) < -10) {
 
-                        front_right.setPower(-.7);
-                        back_right.setPower(-.7);
-                        front_left.setPower(.7);
-                        back_left.setPower(.7);
+                        front_right.setPower(-.35);
+                        back_right.setPower(-.35);
+                        front_left.setPower(.35);
+                        back_left.setPower(.35);
                     }
                 }
                 }

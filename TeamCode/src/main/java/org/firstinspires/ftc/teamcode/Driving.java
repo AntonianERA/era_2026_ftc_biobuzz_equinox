@@ -27,7 +27,7 @@ public class Driving extends LinearOpMode {
     private DcMotorEx outtake = null;
     CRServo outServo;
     double TPS = 0;
-    double RPM_ADJUST = 3000;
+    double RPM_ADJUST = 2500;
     boolean outtakePower = false;
 
     double intakePower = 0;
@@ -94,13 +94,13 @@ public class Driving extends LinearOpMode {
             else if (outtakeSlow){
                 RPM_ADJUST -= 100;
             }
-            //Limited to 3500 RPM
-            if (RPM_ADJUST > 3500) {
-                RPM_ADJUST = 3500;
+            //Limited to 3000 RPM
+            if (RPM_ADJUST > 3000) {
+                RPM_ADJUST = 3000;
             }
-            //Minimum of 2500 RPM
-            if (RPM_ADJUST < 2500) {
-                RPM_ADJUST = 2500;
+            //Minimum of 2000 RPM
+            if (RPM_ADJUST < 2000) {
+                RPM_ADJUST = 2000;
             }
 
             if (outtakeOn){
