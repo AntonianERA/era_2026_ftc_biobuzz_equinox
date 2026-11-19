@@ -75,6 +75,7 @@ public class auto2 extends LinearOpMode {
         //version stuff
         telemetry.addData("version: ",1.0);
         waitForStart();
+        con.recalibrateIMU();
         con.resetPosAndIMU();
         forward(23-7,false);
         //strafe(9,true);
@@ -223,7 +224,7 @@ public class auto2 extends LinearOpMode {
 
         if (right) {
             tar = pastH - degree;
-            while (tar < con.getHeading(AngleUnit.DEGREES)) {
+            while (tar > con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(-1);
                 back_right.setPower(-1);
@@ -234,7 +235,7 @@ public class auto2 extends LinearOpMode {
 
         } else {
             tar = pastH + degree;
-            while (tar >con.getHeading(AngleUnit.DEGREES)) {
+            while (tar <con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(1);
                 back_right.setPower(1);
@@ -251,7 +252,7 @@ public class auto2 extends LinearOpMode {
     }
     public void shoot(double velocity,double time){
         time_guy.reset();
-        while (time_guy.time()<=time);{
+        while (time_guy.seconds()<=time);{
             outtake.setVelocity(velocity);
             outServo.setPower(1);
         }
