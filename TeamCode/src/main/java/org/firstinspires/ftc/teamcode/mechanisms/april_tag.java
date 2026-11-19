@@ -46,9 +46,12 @@ public class april_tag {
     }
     public AprilTagDetection getTagByID(int id){
         for(AprilTagDetection detection : dectectedTags){
+            if (detection.id = id){
+
                 return detection;
 
 
+        }
         }
         return null;
     }
