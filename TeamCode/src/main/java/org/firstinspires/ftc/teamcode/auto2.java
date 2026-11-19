@@ -97,7 +97,6 @@ public class auto2 extends LinearOpMode {
     // positive distance  if back true it goes backwards
     public void forward(double dist ,boolean back){
         Pose2D pose = con.getPosition();
-        con.resetPosAndIMU();
         telemetry.addLine("hellow");
 
         double tar;
@@ -172,13 +171,13 @@ public class auto2 extends LinearOpMode {
         back_right.setPower(0);
         front_left.setPower(0);
         back_left.setPower(0);
+        pastX+=tar;
 
 
     }
     //dist is the distance you want if right true makes bot go right.
     //base goes left
     public void strafe(double dist,boolean right) {
-        con.resetPosAndIMU();
 
         Pose2D pose = con.getPosition();
 
@@ -212,10 +211,10 @@ public class auto2 extends LinearOpMode {
         back_right.setPower(0);
         front_left.setPower(0);
         back_left.setPower(0);
+        pastY+=tar;
 
     }
     public void turn(double degree,boolean right) {
-        con.resetPosAndIMU();
 
 
         Pose2D pose = con.getPosition();
@@ -224,7 +223,7 @@ public class auto2 extends LinearOpMode {
 
         if (right) {
             tar = pastH - degree;
-            while (tar > con.getHeading(AngleUnit.DEGREES)) {
+            while (tar < con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(-1);
                 back_right.setPower(-1);
@@ -235,7 +234,7 @@ public class auto2 extends LinearOpMode {
 
         } else {
             tar = pastH + degree;
-            while (tar <con.getHeading(AngleUnit.DEGREES)) {
+            while (tar >con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(1);
                 back_right.setPower(1);
@@ -244,6 +243,7 @@ public class auto2 extends LinearOpMode {
 
             }
         }
+        pastH += tar;
         front_right.setPower(0);
         back_right.setPower(0);
         front_left.setPower(0);
