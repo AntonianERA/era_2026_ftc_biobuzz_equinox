@@ -22,7 +22,6 @@ public class auto2 extends LinearOpMode {
     private DcMotor front_right;
     private DcMotor intake;
     private DcMotorEx outtake;
-    private Servo blockServo;
     private CRServo outServo;
     private ElapsedTime time_guy = new ElapsedTime();
     private double pastX;
@@ -39,7 +38,6 @@ public class auto2 extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotorEx.class, "outtake");
 
-        blockServo = hardwareMap.get(Servo.class, "block_servo");
         outServo = hardwareMap.get(CRServo.class, "load_Servo");
 
         front_left.setDirection(DcMotor.Direction.REVERSE);
@@ -256,6 +254,7 @@ public class auto2 extends LinearOpMode {
             outServo.setPower(1);
         }
         outtake.setVelocity(0);
+
         outServo.setPower(0);
 
     }
