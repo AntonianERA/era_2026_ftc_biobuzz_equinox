@@ -224,7 +224,7 @@ public class auto extends LinearOpMode {
 
         if (right) {
             tar = pastH - degree;
-            while (tar < con.getHeading(AngleUnit.DEGREES)) {
+            while (tar > con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(-1);
                 back_right.setPower(-1);
@@ -235,7 +235,7 @@ public class auto extends LinearOpMode {
 
         } else {
             tar = pastH + degree;
-            while (tar >con.getHeading(AngleUnit.DEGREES)) {
+            while (tar <con.getHeading(AngleUnit.DEGREES)) {
                 con.update();
                 front_right.setPower(1);
                 back_right.setPower(1);
